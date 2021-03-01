@@ -1,14 +1,15 @@
 use ckb_std::error::SysError;
 
-/// Error
 #[repr(i8)]
 pub enum Error {
     IndexOutOfBound = 1,
     ItemMissing,
     LengthNotEnough,
     Encoding,
-    // Add customized errors here...
-    MyError,
+    IndexStateDataLenError = 5,
+    TimeInfoAccountError,
+    TimeIndexOutOfBound,
+    TimeIndexIncreaseError,
 }
 
 impl From<SysError> for Error {
@@ -23,4 +24,3 @@ impl From<SysError> for Error {
         }
     }
 }
-

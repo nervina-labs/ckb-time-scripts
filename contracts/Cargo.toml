@@ -1,7 +1,7 @@
 [workspace]
 members = [
-  "time-index-type",
-  "time-info-type",
+  "index-state-type",
+  "info-type",
 ]
 
 [profile.release]
