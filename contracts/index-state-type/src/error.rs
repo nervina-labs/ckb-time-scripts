@@ -10,6 +10,8 @@ pub enum Error {
     TimeInfoAccountError,
     TimeIndexOutOfBound,
     TimeIndexIncreaseError,
+    InvalidArgument,
+    TypeOfCellsNotSame,
 }
 
 impl From<SysError> for Error {
