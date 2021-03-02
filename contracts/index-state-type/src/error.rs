@@ -6,12 +6,12 @@ pub enum Error {
     ItemMissing,
     LengthNotEnough,
     Encoding,
-    IndexStateDataLenError = 5,
+    InvalidArgument = 5,
+    TypeOfCellsNotSame,
+    IndexStateDataLenError,
     TimeInfoAccountError,
     TimeIndexOutOfBound,
     TimeIndexIncreaseError,
-    InvalidArgument,
-    TypeOfCellsNotSame,
 }
 
 impl From<SysError> for Error {
