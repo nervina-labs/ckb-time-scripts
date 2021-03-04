@@ -7,9 +7,9 @@ pub enum Error {
     LengthNotEnough,
     Encoding,
     InvalidArgument = 5,
-    TypeOfCellsNotSame,
+    IndexStateTypeNotExist,
     IndexStateDataLenError,
-    TimeInfoAccountError,
+    TimeInfoAmountError,
     TimeIndexOutOfBound,
     TimeIndexIncreaseError,
 }
