@@ -7,6 +7,9 @@ use std::str::FromStr;
 #[cfg(test)]
 mod tests;
 
+#[cfg(test)]
+mod index_state_tests;
+
 const TEST_ENV_VAR: &str = "CAPSULE_TEST_ENV";
 
 pub enum TestEnv {
