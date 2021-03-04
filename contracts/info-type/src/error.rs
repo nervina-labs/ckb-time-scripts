@@ -7,11 +7,11 @@ pub enum Error {
     LengthNotEnough,
     Encoding,
     InvalidArgument = 5,
-    TypeOfCellsNotSame,
     TimeInfoDataLenError,
     IndexStateDataLenError,
+    TimeInfoTypeNotExist,
     TimeInfoIndexNotSame,
-    OutputTimeNotBigger,
+    OutputTimestampNotBigger = 10,
     OutputBlockNumberNotBigger,
     InvalidTimeInfoSince,
 }

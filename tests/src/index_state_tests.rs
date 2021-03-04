@@ -234,6 +234,24 @@ fn test_update_index_state_cells_success() {
 }
 
 #[test]
+fn test_update_full_index_state_cells_success() {
+    let input_data = build_index_state_cell_data(11, SUM_OF_TIME_INFO_CELLS);
+    let outputs_data = vec![
+        build_index_state_cell_data(0, SUM_OF_TIME_INFO_CELLS),
+        Bytes::new(),
+    ];
+    let (mut context, tx) =
+        create_test_context_with_index_state_inputs(input_data, &outputs_data, false);
+
+    let tx = context.complete_tx(tx);
+    // run
+    let cycles = context
+        .verify_tx(&tx, MAX_CYCLES)
+        .expect("pass verification");
+    println!("consume cycles: {}", cycles);
+}
+
+#[test]
 fn test_index_state_len_error() {
     let outputs_data = vec![build_invalid_index_state_cell_data(), Bytes::new()];
     let (mut context, tx) = create_test_context(&outputs_data, false);

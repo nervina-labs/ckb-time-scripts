@@ -5,7 +5,7 @@ use std::path::PathBuf;
 use std::str::FromStr;
 
 #[cfg(test)]
-mod tests;
+mod info_tests;
 
 #[cfg(test)]
 mod index_state_tests;

@@ -3,11 +3,7 @@ use alloc::vec::Vec;
 use ckb_std::{
     ckb_constants::Source,
     ckb_types::{bytes::Bytes, packed::*, prelude::*},
-    debug,
-    high_level::{
-        load_cell_data, load_cell_type, load_cell_type_hash, load_input_out_point, load_script,
-        load_script_hash, QueryIter,
-    },
+    high_level::{load_cell_data, load_cell_type, load_input_out_point, load_script, QueryIter},
 };
 use core::result::Result;
 
@@ -53,7 +49,11 @@ fn check_index_state_cell_data(source: Source) -> Result<Vec<u8>, Error> {
 fn check_index_state_cells_data() -> Result<(), Error> {
     let input_data = check_index_state_cell_data(Source::GroupInput)?;
     let output_data = check_index_state_cell_data(Source::GroupOutput)?;
-    if input_data[0] + 1 != output_data[0] {
+    if input_data[0] == SUM_OF_TIME_INFO_CELLS - 1 {
+        if output_data[0] != 0 {
+            return Err(Error::TimeIndexIncreaseError);
+        }
+    } else if input_data[0] + 1 != output_data[0] {
         return Err(Error::TimeIndexIncreaseError);
     }
     Ok(())
