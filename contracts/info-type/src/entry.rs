@@ -51,19 +51,26 @@ fn load_output_type_script<F>(closure: F) -> Result<(), Error>
 where
     F: Fn(Script) -> Result<(), Error>,
 {
-    match load_cell_type(0, Source::GroupOutput)? {
-        Some(output_type_script) => closure(output_type_script),
-        None => Err(Error::TimeInfoTypeNotExist),
+    match load_cell_type(0, Source::GroupOutput) {
+        Ok(output_type_script_opt) => match output_type_script_opt {
+            Some(output_type_script) => closure(output_type_script),
+            None => Err(Error::TimeInfoTypeNotExist),
+        },
+        Err(_) => Err(Error::TimeInfoTypeNotExist),
     }
 }
 
 // Time info cell data: index(u8) | timestamp(u32) or block number(u64)
 fn check_info_cell_data() -> Result<(), Error> {
-    let info_data = load_cell_data(0, Source::GroupOutput)?;
-    if is_info_data_len_invalid(&info_data) {
-        return Err(Error::TimeInfoDataLenError);
+    match load_cell_data(0, Source::GroupOutput) {
+        Ok(info_data) => {
+            if is_info_data_len_invalid(&info_data) {
+                return Err(Error::TimeInfoDataLenError);
+            }
+            Ok(())
+        },
+        Err(_) => Err(Error::TimeInfoTypeNotExist)
     }
-    Ok(())
 }
 
 fn check_cells_type_scripts_valid() -> Result<(), Error> {

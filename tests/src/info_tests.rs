@@ -232,7 +232,7 @@ fn create_test_context_with_info_inputs(
         .build()];
 
     if type_of_cells_not_same {
-        let another_args = Bytes::copy_from_slice(info_input_out_point.as_slice().clone());
+        let another_args = Bytes::copy_from_slice(index_state_input_out_point.as_slice().clone());
         let another_info_type_script = context
             .build_script(&info_out_point, another_args)
             .expect("script");
