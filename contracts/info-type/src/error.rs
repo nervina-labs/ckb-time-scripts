@@ -14,6 +14,7 @@ pub enum Error {
     OutputTimestampNotBigger = 10,
     OutputBlockNumberNotBigger,
     InvalidTimeInfoSince,
+    IndexStateTypeNotExist,
 }
 
 impl From<SysError> for Error {

@@ -4,7 +4,7 @@ use ckb_std::{
     ckb_constants::Source,
     ckb_types::{bytes::Bytes, packed::*, prelude::*},
     high_level::{
-        load_cell_data, load_cell_type, load_input_out_point, load_input_since, load_script,
+        load_cell_data, load_cell_type, load_input_since, load_script,
         QueryIter,
     },
 };
@@ -18,9 +18,9 @@ pub fn main() -> Result<(), Error> {
     if !check_type_script_exists_in_inputs()? {
         // Create the time info cell and the input info type script doesn't exist
         load_output_type_script(|output_type_script| {
-            let out_point = load_input_out_point(0, Source::Input)?;
-            let type_args: Bytes = output_type_script.args().unpack();
-            if &type_args[..] != out_point.as_slice() {
+            let index_state_type_args = load_output_index_state_type_args()?;
+            let info_type_args: Bytes = output_type_script.args().unpack();
+            if info_type_args[..] != index_state_type_args[..] {
                 return Err(Error::InvalidArgument);
             }
             check_info_cell_data()
@@ -57,6 +57,19 @@ where
             None => Err(Error::TimeInfoTypeNotExist),
         },
         Err(_) => Err(Error::TimeInfoTypeNotExist),
+    }
+}
+
+fn load_output_index_state_type_args() -> Result<Bytes, Error> {
+    match load_cell_type(0, Source::Output) {
+        Ok(output_type_script_opt) => match output_type_script_opt {
+            Some(output_type_script) => {
+                let type_args: Bytes = output_type_script.args().unpack();
+                Ok(type_args)
+            },
+            None => Err(Error::IndexStateTypeNotExist),
+        },
+        Err(_) => Err(Error::IndexStateTypeNotExist),
     }
 }
 
