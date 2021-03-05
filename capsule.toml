@@ -1,0 +1,10 @@
+version = "0.4.3 13d6f1d"
+deployment = "deployment.toml"
+
+[[contracts]]
+name = "index-state-type"
+template_type = "Rust"
+
+[[contracts]]
+name = "info-type"
+template_type = "Rust"

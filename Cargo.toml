@@ -1,0 +1,2 @@
+[workspace]
+members = ["tests", "contracts/index-state-type", "contracts/info-type"]
