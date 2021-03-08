@@ -402,10 +402,7 @@ fn test_create_info_cells_invalid_args_error() {
     let err = context.verify_tx(&tx, MAX_CYCLES).unwrap_err();
 
     let script_cell_index = 1;
-    assert_error_eq!(
-        err,
-        ScriptError::ValidationFailure(INVALID_ARGUMENT).output_type_script(script_cell_index)
-    );
+    assert_type_script_error(err, INVALID_ARGUMENT, script_cell_index);
 }
 
 #[test]
@@ -494,11 +491,7 @@ fn test_info_type_not_exist_error() {
     let err = context.verify_tx(&tx, MAX_CYCLES).unwrap_err();
 
     let script_cell_index = 1;
-    assert_error_eq!(
-        err,
-        ScriptError::ValidationFailure(TIME_INFO_TYPE_NOT_EXIST)
-            .output_type_script(script_cell_index)
-    );
+    assert_type_script_error(err, TIME_INFO_TYPE_NOT_EXIST, script_cell_index);
 }
 
 #[test]
@@ -533,11 +526,7 @@ fn test_info_index_not_same_error() {
     let err = context.verify_tx(&tx, MAX_CYCLES).unwrap_err();
 
     let script_cell_index = 1;
-    assert_error_eq!(
-        err,
-        ScriptError::ValidationFailure(TIME_INFO_INDEX_NOT_SAME)
-            .input_type_script(script_cell_index)
-    );
+    assert_type_script_error(err, TIME_INFO_INDEX_NOT_SAME, script_cell_index);
 }
 
 #[test]

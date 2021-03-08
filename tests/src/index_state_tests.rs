@@ -335,11 +335,7 @@ fn test_type_of_cells_not_same_error() {
     let err = context.verify_tx(&tx, MAX_CYCLES).unwrap_err();
 
     let script_cell_index = 0;
-    assert_error_eq!(
-        err,
-        ScriptError::ValidationFailure(INDEX_STATE_TYPE_NOT_EXIST)
-            .input_type_script(script_cell_index)
-    );
+    assert_type_script_error(err, INDEX_STATE_TYPE_NOT_EXIST, script_cell_index);
 }
 
 #[test]

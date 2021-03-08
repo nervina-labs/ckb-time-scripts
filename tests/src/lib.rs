@@ -1,3 +1,5 @@
+use ckb_tool::ckb_error::Error;
+use ckb_tool::ckb_script::ScriptError;
 use ckb_tool::ckb_types::bytes::Bytes;
 use std::env;
 use std::fs;
@@ -61,4 +63,18 @@ impl Loader {
         path.push(name);
         fs::read(path).expect("binary").into()
     }
+}
+
+pub fn assert_type_script_error(err: Error, error_code: i8, script_cell_index: usize) {
+    let input_type_error = Into::<Error>::into(
+        ScriptError::ValidationFailure(error_code).input_type_script(script_cell_index),
+    )
+    .to_string();
+    let output_type_error = Into::<Error>::into(
+        ScriptError::ValidationFailure(error_code).output_type_script(script_cell_index),
+    )
+    .to_string();
+    let error = Into::<Error>::into(err).to_string();
+    let result = input_type_error == error || output_type_error == error;
+    assert_eq!(result, true);
 }
