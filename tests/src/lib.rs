@@ -76,5 +76,5 @@ pub fn assert_type_script_error(err: Error, error_code: i8, script_cell_index: u
     .to_string();
     let error = Into::<Error>::into(err).to_string();
     let result = input_type_error == error || output_type_error == error;
-    assert_eq!(result, true);
+    assert!(result);
 }
