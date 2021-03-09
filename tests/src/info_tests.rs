@@ -9,6 +9,9 @@ use ckb_tool::ckb_types::{
     prelude::*,
 };
 
+use ckb_x64_simulator::RunningSetup;
+use std::collections::HashMap;
+
 const TIME_INDEX_CELL_DATA_LEN: usize = 2;
 const SUM_OF_TIME_INFO_CELLS: u8 = 12;
 const TIMESTAMP_DATA_LEN: usize = 5;
@@ -403,6 +406,21 @@ fn test_create_info_cells_invalid_args_error() {
 
     let script_cell_index = 1;
     assert_type_script_error(err, INVALID_ARGUMENT, script_cell_index);
+
+    // dump raw test tx files
+    let setup = RunningSetup {
+        is_lock_script:  false,
+        is_output:       true,
+        script_index:    1,
+        native_binaries: HashMap::default(),
+    };
+    write_native_setup(
+        "test_create_info_cells_invalid_args_error",
+        "ckb-time-scripts-sim",
+        &tx,
+        &context,
+        &setup,
+    );
 }
 
 #[test]

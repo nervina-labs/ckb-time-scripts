@@ -1,2 +1,2 @@
 [workspace]
-members = ["tests", "contracts/index-state-type", "contracts/info-type"]
+members = ["tests", "contracts/index-state-type", "contracts/info-type", "natives/index-state-type", "natives/info-type"]
