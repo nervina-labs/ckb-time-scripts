@@ -5,7 +5,8 @@ all:
 
 simulators: simulator/natives-index-state simulator/natives-info
 	mkdir -p build/$(ENVIRONMENT)
-	cp target/$(ENVIRONMENT)/ckb-time-scripts-sim build/$(ENVIRONMENT)/ckb-time-scripts-sim
+	cp target/$(ENVIRONMENT)/ckb-time-index-state-type-sim build/$(ENVIRONMENT)/ckb-time-index-state-type-sim
+	cp target/$(ENVIRONMENT)/ckb-time-info-type-sim build/$(ENVIRONMENT)/ckb-time-info-type-sim
 
 simulator/natives-index-state:
 	CARGO_INCREMENTAL=0 RUSTFLAGS="-Zprofile -Ccodegen-units=1 -Copt-level=0 -Clink-dead-code -Coverflow-checks=off -Zpanic_abort_tests -Cpanic=abort" RUSTDOCFLAGS="-Cpanic=abort" cargo build -p natives-index-state

@@ -8,6 +8,8 @@ use ckb_tool::ckb_types::{
     packed::*,
     prelude::*,
 };
+use ckb_x64_simulator::RunningSetup;
+use std::collections::HashMap;
 
 const TIME_INDEX_CELL_DATA_LEN: usize = 2;
 const SUM_OF_TIME_INFO_CELLS: u8 = 12;
@@ -213,6 +215,21 @@ fn test_create_index_state_cells_success() {
         .verify_tx(&tx, MAX_CYCLES)
         .expect("pass verification");
     println!("consume cycles: {}", cycles);
+
+    // dump raw test tx files
+    let setup = RunningSetup {
+        is_lock_script:  false,
+        is_output:       true,
+        script_index:    0,
+        native_binaries: HashMap::default(),
+    };
+    write_native_setup(
+        "test_create_index_state_cells_success",
+        "ckb-time-index-state-type-sim",
+        &tx,
+        &context,
+        &setup,
+    );
 }
 
 #[test]
@@ -231,6 +248,21 @@ fn test_update_index_state_cells_success() {
         .verify_tx(&tx, MAX_CYCLES)
         .expect("pass verification");
     println!("consume cycles: {}", cycles);
+
+    // dump raw test tx files
+    let setup = RunningSetup {
+        is_lock_script:  false,
+        is_output:       true,
+        script_index:    0,
+        native_binaries: HashMap::default(),
+    };
+    write_native_setup(
+        "test_update_index_state_cells_success",
+        "ckb-time-index-state-type-sim",
+        &tx,
+        &context,
+        &setup,
+    );
 }
 
 #[test]
@@ -249,10 +281,25 @@ fn test_update_full_index_state_cells_success() {
         .verify_tx(&tx, MAX_CYCLES)
         .expect("pass verification");
     println!("consume cycles: {}", cycles);
+
+    // dump raw test tx files
+    let setup = RunningSetup {
+        is_lock_script:  false,
+        is_output:       true,
+        script_index:    0,
+        native_binaries: HashMap::default(),
+    };
+    write_native_setup(
+        "test_update_full_index_state_cells_success",
+        "ckb-time-index-state-type-sim",
+        &tx,
+        &context,
+        &setup,
+    );
 }
 
 #[test]
-fn test_index_state_len_error() {
+fn test_error_index_state_len() {
     let outputs_data = vec![build_invalid_index_state_cell_data(), Bytes::new()];
     let (mut context, tx) = create_test_context(&outputs_data, false);
     let tx = context.complete_tx(tx);
@@ -265,10 +312,25 @@ fn test_index_state_len_error() {
         ScriptError::ValidationFailure(INDEX_STATE_DATA_LEN_ERROR)
             .output_type_script(script_cell_index)
     );
+
+    // dump raw test tx files
+    let setup = RunningSetup {
+        is_lock_script:  false,
+        is_output:       true,
+        script_index:    0,
+        native_binaries: HashMap::default(),
+    };
+    write_native_setup(
+        "test_error_index_state_len",
+        "ckb-time-index-state-type-sim",
+        &tx,
+        &context,
+        &setup,
+    );
 }
 
 #[test]
-fn test_info_amount_error() {
+fn test_error_info_amount() {
     let outputs_data = vec![build_index_state_cell_data(0, 10), Bytes::new()];
     let (mut context, tx) = create_test_context(&outputs_data, false);
     let tx = context.complete_tx(tx);
@@ -281,10 +343,25 @@ fn test_info_amount_error() {
         ScriptError::ValidationFailure(TIME_INFO_AMOUNT_ERROR)
             .output_type_script(script_cell_index)
     );
+
+    // dump raw test tx files
+    let setup = RunningSetup {
+        is_lock_script:  false,
+        is_output:       true,
+        script_index:    0,
+        native_binaries: HashMap::default(),
+    };
+    write_native_setup(
+        "test_error_info_amount",
+        "ckb-time-index-state-type-sim",
+        &tx,
+        &context,
+        &setup,
+    );
 }
 
 #[test]
-fn test_index_out_of_bound_error() {
+fn test_error_index_out_of_bound() {
     let outputs_data = vec![
         build_index_state_cell_data(13, SUM_OF_TIME_INFO_CELLS),
         Bytes::new(),
@@ -300,10 +377,25 @@ fn test_index_out_of_bound_error() {
         ScriptError::ValidationFailure(TIME_INDEX_OUT_OF_BOUND)
             .output_type_script(script_cell_index)
     );
+
+    // dump raw test tx files
+    let setup = RunningSetup {
+        is_lock_script:  false,
+        is_output:       true,
+        script_index:    0,
+        native_binaries: HashMap::default(),
+    };
+    write_native_setup(
+        "test_error_index_out_of_bound",
+        "ckb-time-index-state-type-sim",
+        &tx,
+        &context,
+        &setup,
+    );
 }
 
 #[test]
-fn test_args_invalid_error() {
+fn test_error_args_invalid() {
     let outputs_data = vec![
         build_index_state_cell_data(0, SUM_OF_TIME_INFO_CELLS),
         Bytes::new(),
@@ -318,10 +410,25 @@ fn test_args_invalid_error() {
         err,
         ScriptError::ValidationFailure(INVALID_ARGUMENT).output_type_script(script_cell_index)
     );
+
+    // dump raw test tx files
+    let setup = RunningSetup {
+        is_lock_script:  false,
+        is_output:       true,
+        script_index:    0,
+        native_binaries: HashMap::default(),
+    };
+    write_native_setup(
+        "test_error_args_invalid",
+        "ckb-time-index-state-type-sim",
+        &tx,
+        &context,
+        &setup,
+    );
 }
 
 #[test]
-fn test_type_of_cells_not_same_error() {
+fn test_error_type_of_cells_not_same() {
     let input_data = build_index_state_cell_data(1, SUM_OF_TIME_INFO_CELLS);
     let outputs_data = vec![
         build_index_state_cell_data(2, SUM_OF_TIME_INFO_CELLS),
@@ -339,7 +446,7 @@ fn test_type_of_cells_not_same_error() {
 }
 
 #[test]
-fn test_index_not_increase_error() {
+fn test_error_index_not_increase() {
     let input_data = build_index_state_cell_data(3, SUM_OF_TIME_INFO_CELLS);
     let outputs_data = vec![
         build_index_state_cell_data(2, SUM_OF_TIME_INFO_CELLS),
@@ -357,5 +464,20 @@ fn test_index_not_increase_error() {
         err,
         ScriptError::ValidationFailure(TIME_INDEX_INCREASE_ERROR)
             .input_type_script(script_cell_index)
+    );
+
+    // dump raw test tx files
+    let setup = RunningSetup {
+        is_lock_script:  false,
+        is_output:       true,
+        script_index:    0,
+        native_binaries: HashMap::default(),
+    };
+    write_native_setup(
+        "test_error_index_not_increase",
+        "ckb-time-index-state-type-sim",
+        &tx,
+        &context,
+        &setup,
     );
 }

@@ -13,6 +13,6 @@ default = ["simulator"]
 simulator = []
 
 [[bin]]
-name = "ckb-time-scripts-sim"
+name = "ckb-time-info-type-sim"
 path = "src/info_type.rs"
 required-features = ["simulator"]

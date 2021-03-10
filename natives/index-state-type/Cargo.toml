@@ -13,6 +13,6 @@ default = ["simulator"]
 simulator = []
 
 [[bin]]
-name = "ckb-time-scripts-sim"
+name = "ckb-time-index-state-type-sim"
 path = "src/index_state_type.rs"
 required-features = ["simulator"]
