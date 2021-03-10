@@ -52,23 +52,19 @@ where
     F: Fn(Script) -> Result<(), Error>,
 {
     match load_cell_type(0, Source::GroupOutput) {
-        Ok(output_type_script_opt) => match output_type_script_opt {
-            Some(output_type_script) => closure(output_type_script),
-            None => Err(Error::TimeInfoTypeNotExist),
-        },
+        Ok(Some(output_type_script)) => closure(output_type_script),
+        Ok(None) => Err(Error::TimeInfoTypeNotExist),
         Err(_) => Err(Error::TimeInfoTypeNotExist),
     }
 }
 
 fn load_output_index_state_type_args() -> Result<Bytes, Error> {
     match load_cell_type(0, Source::Output) {
-        Ok(output_type_script_opt) => match output_type_script_opt {
-            Some(output_type_script) => {
-                let type_args: Bytes = output_type_script.args().unpack();
-                Ok(type_args)
-            },
-            None => Err(Error::IndexStateTypeNotExist),
-        },
+        Ok(Some(output_type_script)) => {
+            let type_args: Bytes = output_type_script.args().unpack();
+            Ok(type_args)
+        }
+        Ok(None) => Err(Error::IndexStateTypeNotExist),
         Err(_) => Err(Error::IndexStateTypeNotExist),
     }
 }
@@ -88,10 +84,8 @@ fn check_info_cell_data() -> Result<(), Error> {
 
 fn check_cells_type_scripts_valid() -> Result<(), Error> {
     load_output_type_script(|_| match load_cell_type(0, Source::GroupInput) {
-        Ok(input_type_script_opt) => match input_type_script_opt {
-            Some(_) => Ok(()),
-            None => Err(Error::TimeInfoTypeNotExist),
-        },
+        Ok(Some(_)) => Ok(()),
+        Ok(None) => Err(Error::TimeInfoTypeNotExist),
         Err(_) => Err(Error::TimeInfoTypeNotExist),
     })
 }
