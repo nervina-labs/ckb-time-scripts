@@ -9,6 +9,9 @@ use ckb_tool::ckb_types::{
     prelude::*,
 };
 
+use ckb_x64_simulator::RunningSetup;
+use std::collections::HashMap;
+
 const TIME_INDEX_CELL_DATA_LEN: usize = 2;
 const SUM_OF_TIME_INFO_CELLS: u8 = 12;
 const TIMESTAMP_DATA_LEN: usize = 5;
@@ -90,7 +93,7 @@ fn create_test_context(
     let index_state_type_script = context
         .build_script(
             &index_state_out_point,
-            Bytes::copy_from_slice(normal_input_out_point.as_slice().clone()),
+            Bytes::copy_from_slice(&normal_input_out_point.as_slice()),
         )
         .expect("script");
     let index_state_type_script_dep = CellDep::new_builder()
@@ -100,7 +103,7 @@ fn create_test_context(
     let args = if is_type_args_error {
         Bytes::new()
     } else {
-        Bytes::copy_from_slice(normal_input_out_point.as_slice().clone())
+        Bytes::copy_from_slice(&normal_input_out_point.as_slice())
     };
     let info_type_script = context.build_script(&info_out_point, args).expect("script");
     let info_type_script_dep = CellDep::new_builder().out_point(info_out_point).build();
@@ -127,12 +130,12 @@ fn create_test_context(
         CellOutput::new_builder()
             .capacity(500u64.pack())
             .lock(lock_script.clone())
-            .type_(Some(index_state_type_script.clone()).pack())
+            .type_(Some(index_state_type_script).pack())
             .build(),
         CellOutput::new_builder()
             .capacity(500u64.pack())
             .lock(lock_script)
-            .type_(Some(info_type_script.clone()).pack())
+            .type_(Some(info_type_script).pack())
             .build(),
     ];
 
@@ -184,12 +187,12 @@ fn create_test_context_with_info_inputs(
         Bytes::new(),
     );
 
-    let args = Bytes::copy_from_slice(normal_input_out_point.as_slice().clone());
+    let args = Bytes::copy_from_slice(&normal_input_out_point.as_slice());
     let index_state_type_script = context
         .build_script(&index_state_out_point, args.clone())
         .expect("script");
     let index_state_type_script_dep = CellDep::new_builder()
-        .out_point(index_state_out_point.clone())
+        .out_point(index_state_out_point)
         .build();
 
     let info_type_script = context.build_script(&info_out_point, args).expect("script");
@@ -220,7 +223,7 @@ fn create_test_context_with_info_inputs(
             .previous_output(index_state_input_out_point.clone())
             .build(),
         CellInput::new_builder()
-            .previous_output(info_input_out_point.clone())
+            .previous_output(info_input_out_point)
             .since(since.pack())
             .build(),
     ];
@@ -228,27 +231,27 @@ fn create_test_context_with_info_inputs(
     let mut outputs = vec![CellOutput::new_builder()
         .capacity(500u64.pack())
         .lock(lock_script.clone())
-        .type_(Some(index_state_type_script.clone()).pack())
+        .type_(Some(index_state_type_script).pack())
         .build()];
 
     if type_of_cells_not_same {
-        let another_args = Bytes::copy_from_slice(index_state_input_out_point.as_slice().clone());
+        let another_args = Bytes::copy_from_slice(&index_state_input_out_point.as_slice());
         let another_info_type_script = context
             .build_script(&info_out_point, another_args)
             .expect("script");
         outputs.push(
             CellOutput::new_builder()
                 .capacity(500u64.pack())
-                .lock(lock_script.clone())
-                .type_(Some(another_info_type_script.clone()).pack())
+                .lock(lock_script)
+                .type_(Some(another_info_type_script).pack())
                 .build(),
         );
     } else {
         outputs.push(
             CellOutput::new_builder()
                 .capacity(500u64.pack())
-                .lock(lock_script.clone())
-                .type_(Some(info_type_script.clone()).pack())
+                .lock(lock_script)
+                .type_(Some(info_type_script).pack())
                 .build(),
         );
     };
@@ -383,7 +386,7 @@ fn test_update_info_block_number_cells_success() {
 }
 
 #[test]
-fn test_create_info_cells_invalid_args_error() {
+fn test_error_create_info_cells_invalid_args() {
     let outputs_data = vec![
         build_index_state_cell_data(2, false),
         build_time_info_cell_data(
@@ -406,7 +409,7 @@ fn test_create_info_cells_invalid_args_error() {
 }
 
 #[test]
-fn test_create_info_cell_data_len_error() {
+fn test_error_create_info_cell_data_len() {
     let outputs_data = vec![
         build_index_state_cell_data(2, false),
         build_time_info_cell_data(
@@ -430,10 +433,25 @@ fn test_create_info_cell_data_len_error() {
         ScriptError::ValidationFailure(TIME_INFO_DATA_LEN_ERROR)
             .output_type_script(script_cell_index)
     );
+
+    // dump raw test tx files
+    let setup = RunningSetup {
+        is_lock_script:  false,
+        is_output:       true,
+        script_index:    1,
+        native_binaries: HashMap::default(),
+    };
+    write_native_setup(
+        "test_error_create_info_cell_data_len",
+        "ckb-time-info-type-sim",
+        &tx,
+        &context,
+        &setup,
+    );
 }
 
 #[test]
-fn test_index_state_cell_data_len_error() {
+fn test_error_index_state_cell_data_len() {
     let outputs_data = vec![
         build_index_state_cell_data(2, true),
         build_time_info_cell_data(
@@ -457,10 +475,25 @@ fn test_index_state_cell_data_len_error() {
         ScriptError::ValidationFailure(INDEX_STATE_DATA_LEN_ERROR)
             .input_type_script(script_cell_index)
     );
+
+    // dump raw test tx files
+    let setup = RunningSetup {
+        is_lock_script:  false,
+        is_output:       false,
+        script_index:    1,
+        native_binaries: HashMap::default(),
+    };
+    write_native_setup(
+        "test_error_index_state_cell_data_len",
+        "ckb-time-info-type-sim",
+        &tx,
+        &context,
+        &setup,
+    );
 }
 
 #[test]
-fn test_info_type_not_exist_error() {
+fn test_error_info_type_not_exist() {
     let inputs_data = vec![
         build_index_state_cell_data(11, false),
         build_time_info_cell_data(
@@ -495,7 +528,7 @@ fn test_info_type_not_exist_error() {
 }
 
 #[test]
-fn test_info_index_not_same_error() {
+fn test_error_info_index_not_same() {
     let inputs_data = vec![
         build_index_state_cell_data(11, false),
         build_time_info_cell_data(
@@ -530,7 +563,7 @@ fn test_info_index_not_same_error() {
 }
 
 #[test]
-fn test_output_block_number_not_bigger_error() {
+fn test_error_output_block_number_not_bigger() {
     let inputs_data = vec![
         build_index_state_cell_data(11, false),
         build_time_info_cell_data(
@@ -566,10 +599,25 @@ fn test_output_block_number_not_bigger_error() {
         ScriptError::ValidationFailure(OUTPUT_BLOCK_NUMBER_NOT_BIGGER)
             .input_type_script(script_cell_index)
     );
+
+    // dump raw test tx files
+    let setup = RunningSetup {
+        is_lock_script:  false,
+        is_output:       false,
+        script_index:    1,
+        native_binaries: HashMap::default(),
+    };
+    write_native_setup(
+        "test_error_output_block_number_not_bigger",
+        "ckb-time-info-type-sim",
+        &tx,
+        &context,
+        &setup,
+    );
 }
 
 #[test]
-fn test_output_block_number_since_error() {
+fn test_error_output_block_number_since() {
     let inputs_data = vec![
         build_index_state_cell_data(11, false),
         build_time_info_cell_data(
@@ -605,10 +653,25 @@ fn test_output_block_number_since_error() {
         ScriptError::ValidationFailure(INVALID_TIME_INFO_SINCE)
             .input_type_script(script_cell_index)
     );
+
+    // dump raw test tx files
+    let setup = RunningSetup {
+        is_lock_script:  false,
+        is_output:       false,
+        script_index:    1,
+        native_binaries: HashMap::default(),
+    };
+    write_native_setup(
+        "test_error_output_block_number_since",
+        "ckb-time-info-type-sim",
+        &tx,
+        &context,
+        &setup,
+    );
 }
 
 #[test]
-fn test_output_timestamp_not_bigger_error() {
+fn test_error_output_timestamp_not_bigger() {
     let inputs_data = vec![
         build_index_state_cell_data(11, false),
         build_time_info_cell_data(
@@ -644,10 +707,25 @@ fn test_output_timestamp_not_bigger_error() {
         ScriptError::ValidationFailure(OUTPUT_TIMESTAMP_NOT_BIGGER)
             .input_type_script(script_cell_index)
     );
+
+    // dump raw test tx files
+    let setup = RunningSetup {
+        is_lock_script:  false,
+        is_output:       false,
+        script_index:    1,
+        native_binaries: HashMap::default(),
+    };
+    write_native_setup(
+        "test_error_output_timestamp_not_bigger",
+        "ckb-time-info-type-sim",
+        &tx,
+        &context,
+        &setup,
+    );
 }
 
 #[test]
-fn test_output_timestamp_since_error() {
+fn test_error_output_timestamp_since() {
     let inputs_data = vec![
         build_index_state_cell_data(11, false),
         build_time_info_cell_data(
@@ -682,5 +760,20 @@ fn test_output_timestamp_since_error() {
         err,
         ScriptError::ValidationFailure(INVALID_TIME_INFO_SINCE)
             .input_type_script(script_cell_index)
+    );
+
+    // dump raw test tx files
+    let setup = RunningSetup {
+        is_lock_script:  false,
+        is_output:       false,
+        script_index:    1,
+        native_binaries: HashMap::default(),
+    };
+    write_native_setup(
+        "test_error_output_timestamp_since",
+        "ckb-time-info-type-sim",
+        &tx,
+        &context,
+        &setup,
     );
 }

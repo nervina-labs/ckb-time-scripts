@@ -49,10 +49,8 @@ where
     F: Fn(Script) -> Result<(), Error>,
 {
     match load_cell_type(0, Source::GroupOutput) {
-        Ok(output_type_script_opt) => match output_type_script_opt {
-            Some(output_type_script) => closure(output_type_script),
-            None => Err(Error::IndexStateTypeNotExist),
-        },
+        Ok(Some(output_type_script)) => closure(output_type_script),
+        Ok(None) => Err(Error::IndexStateTypeNotExist),
         Err(_) => Err(Error::IndexStateTypeNotExist),
     }
 }
@@ -87,10 +85,8 @@ fn check_index_state_cells_data() -> Result<(), Error> {
 
 fn check_cells_type_scripts_valid() -> Result<(), Error> {
     load_output_type_script(|_| match load_cell_type(0, Source::GroupInput) {
-        Ok(input_type_script_opt) => match input_type_script_opt {
-            Some(_) => Ok(()),
-            None => Err(Error::IndexStateTypeNotExist),
-        },
+        Ok(Some(_)) => Ok(()),
+        Ok(None) => Err(Error::IndexStateTypeNotExist),
         Err(_) => Err(Error::IndexStateTypeNotExist),
     })
 }
