@@ -27,4 +27,4 @@ jobs:
         run: ./capsule/capsule build
 
       - name: Test contracts
-        run: .make test
+        run: make test
