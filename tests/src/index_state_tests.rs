@@ -218,9 +218,9 @@ fn test_create_index_state_cells_success() {
 
     // dump raw test tx files
     let setup = RunningSetup {
-        is_lock_script:  false,
-        is_output:       true,
-        script_index:    0,
+        is_lock_script: false,
+        is_output: true,
+        script_index: 0,
         native_binaries: HashMap::default(),
     };
     write_native_setup(
@@ -251,9 +251,9 @@ fn test_update_index_state_cells_success() {
 
     // dump raw test tx files
     let setup = RunningSetup {
-        is_lock_script:  false,
-        is_output:       true,
-        script_index:    0,
+        is_lock_script: false,
+        is_output: true,
+        script_index: 0,
         native_binaries: HashMap::default(),
     };
     write_native_setup(
@@ -284,9 +284,9 @@ fn test_update_full_index_state_cells_success() {
 
     // dump raw test tx files
     let setup = RunningSetup {
-        is_lock_script:  false,
-        is_output:       true,
-        script_index:    0,
+        is_lock_script: false,
+        is_output: true,
+        script_index: 0,
         native_binaries: HashMap::default(),
     };
     write_native_setup(
@@ -315,9 +315,9 @@ fn test_error_index_state_len() {
 
     // dump raw test tx files
     let setup = RunningSetup {
-        is_lock_script:  false,
-        is_output:       true,
-        script_index:    0,
+        is_lock_script: false,
+        is_output: true,
+        script_index: 0,
         native_binaries: HashMap::default(),
     };
     write_native_setup(
@@ -346,9 +346,9 @@ fn test_error_info_amount() {
 
     // dump raw test tx files
     let setup = RunningSetup {
-        is_lock_script:  false,
-        is_output:       true,
-        script_index:    0,
+        is_lock_script: false,
+        is_output: true,
+        script_index: 0,
         native_binaries: HashMap::default(),
     };
     write_native_setup(
@@ -380,9 +380,9 @@ fn test_error_index_out_of_bound() {
 
     // dump raw test tx files
     let setup = RunningSetup {
-        is_lock_script:  false,
-        is_output:       true,
-        script_index:    0,
+        is_lock_script: false,
+        is_output: true,
+        script_index: 0,
         native_binaries: HashMap::default(),
     };
     write_native_setup(
@@ -413,9 +413,9 @@ fn test_error_args_invalid() {
 
     // dump raw test tx files
     let setup = RunningSetup {
-        is_lock_script:  false,
-        is_output:       true,
-        script_index:    0,
+        is_lock_script: false,
+        is_output: true,
+        script_index: 0,
         native_binaries: HashMap::default(),
     };
     write_native_setup(
@@ -468,9 +468,9 @@ fn test_error_index_not_increase() {
 
     // dump raw test tx files
     let setup = RunningSetup {
-        is_lock_script:  false,
-        is_output:       true,
-        script_index:    0,
+        is_lock_script: false,
+        is_output: true,
+        script_index: 0,
         native_binaries: HashMap::default(),
     };
     write_native_setup(

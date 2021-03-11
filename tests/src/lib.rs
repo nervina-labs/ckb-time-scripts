@@ -1,23 +1,21 @@
 #[macro_use]
 extern crate lazy_static;
 
+use ckb_standalone_debugger::transaction::{
+    MockCellDep, MockInfo, MockInput, MockTransaction, ReprMockTransaction,
+};
+use ckb_testtool::context::Context;
 use ckb_tool::ckb_error::Error;
 use ckb_tool::ckb_script::ScriptError;
 use ckb_tool::ckb_types::bytes::Bytes;
+use ckb_x64_simulator::RunningSetup;
+use serde_json::to_string_pretty;
 use std::env;
 use std::fs;
 use std::path::{Path, PathBuf};
 use std::str::FromStr;
-use ckb_testtool::context::Context;
-use ckb_standalone_debugger::transaction::{
-    MockCellDep, MockInfo, MockInput, MockTransaction, ReprMockTransaction,
-};
-use ckb_x64_simulator::RunningSetup;
-use serde_json::to_string_pretty;
 
-use ckb_tool::ckb_types::{
-    core::{DepType, TransactionView},
-};
+use ckb_tool::ckb_types::core::{DepType, TransactionView};
 
 #[cfg(test)]
 mod info_tests;
@@ -150,8 +148,8 @@ fn build_mock_transaction(tx: &TransactionView, context: &Context) -> MockTransa
         })
         .collect();
     let mock_info = MockInfo {
-        inputs:      mock_inputs,
-        cell_deps:   mock_cell_deps,
+        inputs: mock_inputs,
+        cell_deps: mock_cell_deps,
         header_deps: vec![],
     };
     MockTransaction {

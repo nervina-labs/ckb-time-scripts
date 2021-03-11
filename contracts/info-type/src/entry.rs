@@ -3,10 +3,7 @@ use alloc::vec::Vec;
 use ckb_std::{
     ckb_constants::Source,
     ckb_types::{bytes::Bytes, packed::*, prelude::*},
-    high_level::{
-        load_cell_data, load_cell_type, load_input_since, load_script,
-        QueryIter,
-    },
+    high_level::{load_cell_data, load_cell_type, load_input_since, load_script, QueryIter},
 };
 use core::result::Result;
 
@@ -77,8 +74,8 @@ fn check_info_cell_data() -> Result<(), Error> {
                 return Err(Error::TimeInfoDataLenError);
             }
             Ok(())
-        },
-        Err(_) => Err(Error::TimeInfoTypeNotExist)
+        }
+        Err(_) => Err(Error::TimeInfoTypeNotExist),
     }
 }
 

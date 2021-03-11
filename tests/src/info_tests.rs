@@ -436,9 +436,9 @@ fn test_error_create_info_cell_data_len() {
 
     // dump raw test tx files
     let setup = RunningSetup {
-        is_lock_script:  false,
-        is_output:       true,
-        script_index:    1,
+        is_lock_script: false,
+        is_output: true,
+        script_index: 1,
         native_binaries: HashMap::default(),
     };
     write_native_setup(
@@ -478,9 +478,9 @@ fn test_error_index_state_cell_data_len() {
 
     // dump raw test tx files
     let setup = RunningSetup {
-        is_lock_script:  false,
-        is_output:       false,
-        script_index:    1,
+        is_lock_script: false,
+        is_output: false,
+        script_index: 1,
         native_binaries: HashMap::default(),
     };
     write_native_setup(
@@ -602,9 +602,9 @@ fn test_error_output_block_number_not_bigger() {
 
     // dump raw test tx files
     let setup = RunningSetup {
-        is_lock_script:  false,
-        is_output:       false,
-        script_index:    1,
+        is_lock_script: false,
+        is_output: false,
+        script_index: 1,
         native_binaries: HashMap::default(),
     };
     write_native_setup(
@@ -656,9 +656,9 @@ fn test_error_output_block_number_since() {
 
     // dump raw test tx files
     let setup = RunningSetup {
-        is_lock_script:  false,
-        is_output:       false,
-        script_index:    1,
+        is_lock_script: false,
+        is_output: false,
+        script_index: 1,
         native_binaries: HashMap::default(),
     };
     write_native_setup(
@@ -710,9 +710,9 @@ fn test_error_output_timestamp_not_bigger() {
 
     // dump raw test tx files
     let setup = RunningSetup {
-        is_lock_script:  false,
-        is_output:       false,
-        script_index:    1,
+        is_lock_script: false,
+        is_output: false,
+        script_index: 1,
         native_binaries: HashMap::default(),
     };
     write_native_setup(
@@ -764,9 +764,9 @@ fn test_error_output_timestamp_since() {
 
     // dump raw test tx files
     let setup = RunningSetup {
-        is_lock_script:  false,
-        is_output:       false,
-        script_index:    1,
+        is_lock_script: false,
+        is_output: false,
+        script_index: 1,
         native_binaries: HashMap::default(),
     };
     write_native_setup(
